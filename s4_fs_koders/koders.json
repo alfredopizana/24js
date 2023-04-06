@@ -1,12 +1,39 @@
 {
-    "koders":[
-        {
-            "id":1,
-            "name": "Alfred",
-            "lastName": "Pizana",
-            "Age": "29",
-            "favoriteFood": "Pizza"
-        }
-    ]
-
+  "koders": [
+    {
+      "id": 1,
+      "name": "Alfred",
+      "lastName": "Pizana",
+      "Age": "29",
+      "favoriteFood": "Pizza"
+    },
+    {
+      "id": 2,
+      "name": "Manuel",
+      "lastName": "Dominguez",
+      "Age": "36",
+      "favoriteFood": "Carne"
+    },
+    {
+      "id": 3,
+      "name": "Leonardo",
+      "lastName": "Castro",
+      "Age": "24",
+      "favoriteFood": "Spaguetti"
+    },
+    {
+      "id": 3,
+      "name": "Leonardo",
+      "lastName": "Castro",
+      "Age": "24",
+      "favoriteFood": "Spaguetti"
+    },
+    {
+      "id": 10000,
+      "name": "KoderN",
+      "lastName": "Etc",
+      "Age": "24",
+      "favoriteFood": "Spaguetti"
+    }
+  ]
 }
