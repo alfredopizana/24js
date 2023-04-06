@@ -1,0 +1,12 @@
+{
+    "koders":[
+        {
+            "id":1,
+            "name": "Alfred",
+            "lastName": "Pizana",
+            "Age": "29",
+            "favoriteFood": "Pizza"
+        }
+    ]
+
+}
