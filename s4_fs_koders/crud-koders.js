@@ -56,7 +56,7 @@ function readAllKodersAndFilterByAge() {
                 koder.Age = edadNumerica
                 return koder;
             })
-
+            //....
         }
     })
 }
@@ -131,20 +131,12 @@ function addKoder() {
 
             fs.writeFile("koders.json", JSON.stringify(registro, null, "  "), (errorAlEscribirKoder) => {
 
-
-
-
                 if (errorAlEscribirKoder) {
                     console.log(errorAlEscribirKoder)
                 } else {
 
                     console.log("Listo!!! nuestro koder se registro exitosamente el archivo koders.json")
                 }
-
-
-
-
-
 
             })
         }
