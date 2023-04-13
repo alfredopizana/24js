@@ -78,6 +78,10 @@ server.listen(port, () => {
         POST /koders -> Response json: { message: "Aqui se crearan koders" }
         PATCH /koders -> Response json: { message: "Aqui se actualizaran koders"}
         DELETE /koders -> Response json: { message: "Aqui se eliminaran koders"}
+
+
+        Investigar sobre Routers
+        que son los query params y como obtenerlos
 */
 
 
