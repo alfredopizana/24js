@@ -30,11 +30,11 @@ const http = require('http')
 
 /**
  * Reaccionar a las siguientes rutas:
- * 
+ *
  * GET /koders -> Response: Aqui estaran todos los koders
  * POST /koders -> Response: Aqui puedes crear un koder
  * X /x -> Response: No conozco la solicitud ---------- GET /hola  POST /saludo
- * 
+ *
  */
 
 
@@ -79,8 +79,8 @@ const http = require('http')
 
 /**
  * GET /koders -> Response { "message": "Aqui se obtendran los koders"}
- * 
- * 
+ *
+ *
  * Tip: Content-Type: mimetype
  */
 
@@ -133,3 +133,4 @@ server.listen(8080, () => {
 
 // Investigar sobre expressjs
 // npm 
+
