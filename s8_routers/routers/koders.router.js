@@ -1,33 +1,60 @@
 import express from 'express'
 import fs from 'fs'
 
-const server = express() // Crear nuestro servidor
-const port = 8080
+// Router -> Subconjunto del servidor, lo agrupamos semanticamente (comparten uno o varios rasgos)
 
-//Agregar un middleware - convertir lo llega en el body a un json
-server.use(express.json())
+const router = express.Router() // Crea el router
 
 
+router.get('/', async (request, response) => {
 
+    const dataFile = await fs.promises.readFile("./kodemia.json", "utf8")
+    const json = JSON.parse(dataFile)
+    const koders = json.koders
+
+    const { generation, location, age } = request.query
+    /**
+     * {
+     *  generation: '24'
+     *  name: 'Eddie'
+     * } 
+     * .includes
+     * 
+     * ?  key=value  &  key1=value1    
+     * 
+     * 
+     * 
+     */
+    console.log(generation)
+    let filteredKoders = koders;
+
+    if (generation) {
+        filteredKoders = filteredKoders.filter(koder => koder.generation === generation)
+    }
+
+    if (location) {
+        filteredKoders = filteredKoders.filter(koder => koder.location === location)
+    }
+
+    if (age) {
+        filteredKoders = filteredKoders.filter(koder => koder.age === age)
+    }
+
+    response.json({
+        success: true,
+        data: {
+            koders: filteredKoders
+        }
+    })
+
+})
 
 
 //GET /koders -> Regresar un json con una lista de koders,
 //                  la data de los koders vendra del archivo kodemia.json
 
-server.get('/koders', async (request, response) => {
-    const dataFile = await fs.promises.readFile("./kodemia.json", "utf8")
-    const json = JSON.parse(dataFile)
-    const koders = json.koders
 
-    response.json({
-        success: true,
-        data: {
-            koders: koders
-        }
-    })
-})
-
-server.post('/koders', async (request, response) => {
+router.post('/', async (request, response) => {
     /**
      * Leer archivo de koders - Check
      * obtener los koders - Check 
@@ -55,7 +82,7 @@ server.post('/koders', async (request, response) => {
     response.json(message)
 })
 
-server.patch('/koders/:idKoder', (request, response) => {
+router.patch('/:idKoder', (request, response) => {
 
     // request.params.id
     // request.params.idKoder
@@ -65,33 +92,10 @@ server.patch('/koders/:idKoder', (request, response) => {
     response.json(message)
 })
 
-server.delete('/koders', (request, response) => {
+router.delete('/', (request, response) => {
     const message = { message: "Aqui se eliminaran koders" }
     response.json(message)
 })
 
 
-server.listen(port, () => {
-    console.log(`Server listening on port ${port}`)
-})
-
-/*
-    Practica:
-    Generar las siguientes rutas:
-        GET /koders -> Response json: { message: "Aqui estaran los koders" } - Check
-        POST /koders -> Response json: { message: "Aqui se crearan koders" }
-        PATCH /koders -> Response json: { message: "Aqui se actualizaran koders"}
-        DELETE /koders -> Response json: { message: "Aqui se eliminaran koders"}
-
-
-        Investigar sobre Routers
-        que son los query params y como obtenerlos
-*/
-
-
-// Endpoint -> 
-/**
- * Conjunto de un METODO y una RUTA (path)
- * 
- * Cada endpoint va a implementar su propipa logica, y cada uno es independiente del otro
- */
+export default router
