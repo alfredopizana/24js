@@ -1,9 +1,27 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv'
 
-const DB_USER = 'apizana'
-const DB_PASSWORD = 'YsKFw31a22AIFUJd'
-const DB_HOST = 'generacion24.xxpuvwh.mongodb.net'
-const DB_NAME = 'kodemia'
+dotenv.config()
+
+
+// const DB_USER = 'tuuser'
+// const DB_PASSWORD = 'unvalor'
+// const DB_HOST = 'unvalor'
+// const DB_NAME = 'valor'
+
+// console.log('PROCESS DB_USER: ', process.env.DB_USER)
+// console.log('PROCESS DB_PASSWORD: ', process.env.DB_PASSWORD)
+// console.log('PROCESS DB_HOST: ', process.env.DB_HOST)
+// console.log('PROCESS DB_NAME: ', process.env.DB_NAME)
+
+// const DB_USER = process.env.DB_USER
+// const DB_PASSWORD = process.env.DB_PASSWORD
+// const DB_HOST = process.env.DB_HOST
+// const DB_NAME = process.env.DB_NAME
+
+
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env
+// console.log(process.env)
 
 const URL = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`
 
@@ -25,7 +43,9 @@ const URL = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?retry
 
     Modelos hace referencia a la coleccion        
 
+    process.argv 
 
+    process.env
  */
 
 
