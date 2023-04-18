@@ -3,7 +3,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-
 // const DB_USER = 'tuuser'
 // const DB_PASSWORD = 'unvalor'
 // const DB_HOST = 'unvalor'
@@ -19,6 +18,8 @@ dotenv.config()
 // const DB_HOST = process.env.DB_HOST
 // const DB_NAME = process.env.DB_NAME
 
+
+//
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env
 // console.log(process.env)
@@ -85,9 +86,11 @@ const koderSchema = new mongoose.Schema({
 })
 
 
-//Al crear un modelo de mongoose - Por convencion la primera es mayuscula
+// Al crear un modelo de mongoose - Por convencion la primera es mayuscula
 // El modelo hace referencia a la coleccion
 const Koder = mongoose.model('koders', koderSchema)
+
+//ODM 
 
 
 
