@@ -18,6 +18,37 @@ const server = express()
 //Middlewares 
 server.use(express.json()) // Convierte(Parsea) el request a un JSON // Similar a lo que haciamos con JSON.parse() 
 
+server.use((request, response, next) => {
+
+    console.log("Checando naranjas ... ")
+    request.orangeAreGood = true
+
+    if (request.orangeAreGood === false) {
+
+        response.json({
+            message: "Las naranjas no estabas buenas..."
+
+        })
+        return
+    }
+
+    next()
+})
+
+server.use((request, response, next) => {
+    const { orangeAreGood } = request
+    console.log("Orange are Good: ", orangeAreGood)
+    console.log("Cut oranges ...")
+    next()
+})
+
+server.use((request, response, next) => {
+    console.log("The juice is ready.... 💖")
+    next()
+})
+
+
+
 //Routers
 server.get('/koders', async (request, response) => {
 
@@ -39,11 +70,13 @@ server.get('/koders', async (request, response) => {
         /*
             error : {
                 message: "",
-                status: 4XX
+
             }
         */
+
+        // error.status = // undefined 
         response
-            .status(error.status)
+            .status(error.status || 400)
             .json({
                 success: false,
                 message: error.message
@@ -103,17 +136,28 @@ server.patch("/koders/:id", async (request, response) => {
 })
 
 server.delete("/koders/:id", async (request, response) => {
+    try {
 
-    const { id } = request.params
+        const { id } = request.params
 
-    const koderDeleted = await Koder.findByIdAndDelete(id)
+        const koderDeleted = await Koder.findByIdAndDelete(id)
 
-    response.json({
-        success: true,
-        data: {
-            koderDeleted: koderDeleted
-        }
-    })
+        if (!koderDeleted) throw new CustomError("El koder no se pudo eliminar", 404)
+
+        response.json({
+            success: true,
+            data: {
+                koderDeleted: koderDeleted
+            }
+        })
+
+
+    } catch (error) {
+        //Error : { message, status} 
+        response
+            .status(error.status || 400)
+            .json({ sucess: false, message: error.message })
+    }
 
 })
 
