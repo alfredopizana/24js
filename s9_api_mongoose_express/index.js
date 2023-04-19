@@ -18,34 +18,68 @@ const server = express()
 //Middlewares 
 server.use(express.json()) // Convierte(Parsea) el request a un JSON // Similar a lo que haciamos con JSON.parse() 
 
+/**
+ * Crear un middlware que se ejecute a nivel de aplicacion
+ *  
+ * Y revise si el body trae una propiedad de tipo name, entonces imprimar un saludo. ej.
+ * 
+ * "Hola ${kodername}, bienvenido al server"
+ * 
+ */
+
 server.use((request, response, next) => {
 
-    console.log("Checando naranjas ... ")
-    request.orangeAreGood = true
+    const { name } = request.body
 
-    if (request.orangeAreGood === false) {
-
-        response.json({
-            message: "Las naranjas no estabas buenas..."
-
-        })
-        return
+    if (name) {
+        console.log(`Hola ${name}, bienvenido al server de expres 24js `)
     }
-
     next()
+
+
+    /**
+     * 
+     Terminar las aplicacion ya con el codigo organizado en el router koder, y el schema/Model de koder dentro de la carpeta models
+
+
+     Crear un middleware que valide siempre que venga el campo isAdmin = true en el body de la petición, si no viene regresar el estatus de prohibido (403).
+
+     Leer sobre Clean Arquitecture 
+     */
+
 })
 
-server.use((request, response, next) => {
-    const { orangeAreGood } = request
-    console.log("Orange are Good: ", orangeAreGood)
-    console.log("Cut oranges ...")
-    next()
-})
 
-server.use((request, response, next) => {
-    console.log("The juice is ready.... 💖")
-    next()
-})
+
+
+// server.use((request, response, next) => {
+
+//     console.log("Checando naranjas ... ")
+//     request.orangeAreGood = true
+
+//     if (request.orangeAreGood === false) {
+
+//         response.json({
+//             message: "Las naranjas no estabas buenas..."
+
+//         })
+//         return
+//     }
+
+//     next()
+// })
+
+// server.use((request, response, next) => {
+//     const { orangeAreGood } = request
+//     console.log("Orange are Good: ", orangeAreGood)
+//     console.log("Cut oranges ...")
+//     next()
+// })
+
+// server.use((request, response, next) => {
+//     console.log("The juice is ready.... 💖")
+//     next()
+// })
 
 
 
@@ -135,9 +169,10 @@ server.patch("/koders/:id", async (request, response) => {
     })
 })
 
-server.delete("/koders/:id", async (request, response) => {
+server.delete("/koders/:id", async (request, response, next) => {
     try {
-
+        console.log("Ejecutando Delete...")
+        next()
         const { id } = request.params
 
         const koderDeleted = await Koder.findByIdAndDelete(id)
@@ -161,6 +196,12 @@ server.delete("/koders/:id", async (request, response) => {
 
 })
 
+
+server.use((request, response, next) => {
+
+    console.log("Adios, fin de la peticion")
+
+})
 
 
 //server.use('/koders', (request, response, next) => { }, kodersRouter)
