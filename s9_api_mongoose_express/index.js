@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 import express from "express";
 import * as dotenv from 'dotenv';
-import kodersRouter from "./routers/koders.router.js"
+//import kodersRouter from "./routers/koders.router.js"
+import { Koder } from "./models/koders.model.js";
+import { CustomError } from "./errorCustom.js";
+
 
 dotenv.config()
 
@@ -16,7 +19,42 @@ const server = express()
 server.use(express.json()) // Convierte(Parsea) el request a un JSON // Similar a lo que haciamos con JSON.parse() 
 
 //Routers
-server.use('/koders', kodersRouter)
+server.get('/koders', async (request, response) => {
+
+    try {
+        //Koder es el modelo (interfaz) que nos va a permitir conectarnos a la base de datos
+        const allKoders = await Koder.find({})
+
+        if (!allKoders)
+            throw new CustomError("Koders no encontrados! Server nor funciona", 404)
+
+        response.json({
+            success: true,
+            data: {
+                koders: allKoders
+            }
+        })
+    } catch (error) {
+
+        /*
+            error : {
+                message: "",
+                status: 4XX
+            }
+        */
+
+        response
+            .status(error.status)
+            .json({
+                success: false,
+                message: error.message
+            })
+    }
+
+})
+
+
+//server.use('/koders', (request, response, next) => { }, kodersRouter)
 
 
 mongoose.connect(URL)
