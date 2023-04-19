@@ -34,4 +34,6 @@ const koderSchema = new mongoose.Schema({
 
 const Koder = mongoose.model('koders', koderSchema)
 
-export { Koder }
+const saludo = "hola"
+
+export { Koder, saludo } // Esto es un objeto

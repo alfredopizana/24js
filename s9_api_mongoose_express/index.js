@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import express from "express";
 import * as dotenv from 'dotenv';
 //import kodersRouter from "./routers/koders.router.js"
-import { Koder } from "./models/koders.model.js";
+import { Koder, saludo } from "./models/koders.model.js";
 import { CustomError } from "./errorCustom.js";
 
-
+console.log(saludo)
 dotenv.config()
 
 
@@ -34,15 +34,14 @@ server.get('/koders', async (request, response) => {
                 koders: allKoders
             }
         })
-    } catch (error) {
 
+    } catch (error) {
         /*
             error : {
                 message: "",
                 status: 4XX
             }
         */
-
         response
             .status(error.status)
             .json({
@@ -52,6 +51,72 @@ server.get('/koders', async (request, response) => {
     }
 
 })
+
+// POST - Crear
+server.post("/koders", async (request, response) => {
+
+    try {
+        const koderData = request.body;
+        console.log({ koderData })
+
+        const koderCreated = await Koder.create(koderData)
+        console.log({ koderCreated })
+
+        response
+            .status(201)
+            .json({
+                sucess: true,
+                data: {
+                    koder: koderCreated
+                }
+            })
+
+    } catch (error) {
+        response
+            .status(error.status || 400)
+            .json({
+                sucess: false,
+                message: error.message
+            })
+    }
+
+
+})
+
+
+//PATCH Actualiza
+server.patch("/koders/:id", async (request, response) => {
+
+    const { id } = request.params
+    const newData = request.body
+
+
+    //FindByIdAndUpdate    
+    const koderUpdated = await Koder.findByIdAndUpdate(id, newData, { new: true })
+    console.log(koderUpdated)
+    response.json({
+        success: true,
+        data: {
+            koderUpdate: koderUpdated
+        }
+    })
+})
+
+server.delete("/koders/:id", async (request, response) => {
+
+    const { id } = request.params
+
+    const koderDeleted = await Koder.findByIdAndDelete(id)
+
+    response.json({
+        success: true,
+        data: {
+            koderDeleted: koderDeleted
+        }
+    })
+
+})
+
 
 
 //server.use('/koders', (request, response, next) => { }, kodersRouter)
