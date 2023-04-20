@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 //import kodersRouter from "./routers/koders.router.js"
 import { Koder, saludo } from "./models/koders.model.js";
 import { CustomError } from "./errorCustom.js";
-
+import koderRouter from "./routers/koders.router.js"
 console.log(saludo)
 dotenv.config()
 
@@ -29,11 +29,16 @@ server.use(express.json()) // Convierte(Parsea) el request a un JSON // Similar 
 
 server.use((request, response, next) => {
 
-    const { name } = request.body
+    const { isAdmin } = request.body
 
-    if (name) {
-        console.log(`Hola ${name}, bienvenido al server de expres 24js `)
+    if (!isAdmin) {
+        response.status(403).json({
+            success: false,
+            message: "Unauthorized"
+        })
+        return
     }
+    delete request.isAdmin
     next()
 
 
@@ -48,6 +53,12 @@ server.use((request, response, next) => {
      */
 
 })
+
+//Routers
+
+server.use("/koders", koderRouter)
+
+
 
 
 
@@ -83,125 +94,137 @@ server.use((request, response, next) => {
 
 
 
-//Routers
-server.get('/koders', async (request, response) => {
+// //Routers
+// server.get('/koders', async (request, response) => {
 
-    try {
-        //Koder es el modelo (interfaz) que nos va a permitir conectarnos a la base de datos
-        const allKoders = await Koder.find({})
+//     try {
 
-        if (!allKoders)
-            throw new CustomError("Koders no encontrados! Server nor funciona", 404)
+//         // const { idoloquesea, nombreDeLaAsignatura } = request.params
+//         // console.log({ idoloquesea, nombreDeLaAsignatura })
 
-        response.json({
-            success: true,
-            data: {
-                koders: allKoders
-            }
-        })
-
-    } catch (error) {
-        /*
-            error : {
-                message: "",
-
-            }
-        */
-
-        // error.status = // undefined 
-        response
-            .status(error.status || 400)
-            .json({
-                success: false,
-                message: error.message
-            })
-    }
-
-})
-
-// POST - Crear
-server.post("/koders", async (request, response) => {
-
-    try {
-        const koderData = request.body;
-        console.log({ koderData })
-
-        const koderCreated = await Koder.create(koderData)
-        console.log({ koderCreated })
-
-        response
-            .status(201)
-            .json({
-                sucess: true,
-                data: {
-                    koder: koderCreated
-                }
-            })
-
-    } catch (error) {
-        response
-            .status(error.status || 400)
-            .json({
-                sucess: false,
-                message: error.message
-            })
-    }
+//         // const { location } = request.query
+//         // console.log(location)
 
 
-})
+//         //Koder es el modelo (interfaz) que nos va a permitir conectarnos a la base de datos
+//         const allKoders = await Koder.find({})
+
+//         if (!allKoders)
+//             throw new CustomError("Koders no encontrados! Server nor funciona", 404)
+
+//         response.json({
+//             success: true,
+//             data: {
+//                 koders: allKoders
+//             }
+//         })
+
+//     } catch (error) {
+//         /*
+//             error : {
+//                 message: "",
+
+//             }
+//         */
+
+//         // error.status = // undefined 
+//         response
+//             .status(error.status || 400)
+//             .json({
+//                 success: false,
+//                 message: error.message
+//             })
+//     }
+
+// })
+
+// // POST - Crear
+// server.post("/koders", async (request, response) => {
+
+//     try {
+//         const koderData = request.body;
+//         console.log({ koderData })
+
+//         const koderCreated = await Koder.create(koderData)
+//         console.log({ koderCreated })
+
+//         response
+//             .status(201)
+//             .json({
+//                 sucess: true,
+//                 data: {
+//                     koder: koderCreated
+//                 }
+//             })
+
+//     } catch (error) {
+//         response
+//             .status(error.status || 400)
+//             .json({
+//                 sucess: false,
+//                 message: error.message
+//             })
+//     }
 
 
-//PATCH Actualiza
-server.patch("/koders/:id", async (request, response) => {
-
-    const { id } = request.params
-    const newData = request.body
+// })
 
 
-    //FindByIdAndUpdate    
-    const koderUpdated = await Koder.findByIdAndUpdate(id, newData, { new: true })
-    console.log(koderUpdated)
-    response.json({
-        success: true,
-        data: {
-            koderUpdate: koderUpdated
-        }
-    })
-})
+// //PATCH Actualiza
+// server.patch("/koders/:id", async (request, response) => {
+//     try {
+//         const { id } = request.params
+//         const newData = request.body
+//         delete newData.isAdmin
+//         console.log({ newData })
 
-server.delete("/koders/:id", async (request, response, next) => {
-    try {
-        console.log("Ejecutando Delete...")
-        next()
-        const { id } = request.params
+//         //FindByIdAndUpdate    
+//         const koderUpdated = await Koder.findByIdAndUpdate(id, newData, { new: true })
+//         console.log(koderUpdated)
+//         response.json({
+//             success: true,
+//             data: {
+//                 koderUpdate: koderUpdated
+//             }
+//         })
 
-        const koderDeleted = await Koder.findByIdAndDelete(id)
+//     } catch (error) {
+//         //Error : { message, status} 
+//         response
+//             .status(error.status || 400)
+//             .json({ sucess: false, message: error.message })
+//     }
+// })
 
-        if (!koderDeleted) throw new CustomError("El koder no se pudo eliminar", 404)
+// server.delete("/koders/:id", async (request, response, next) => {
+//     try {
+//         console.log("Ejecutando Delete...")
 
-        response.json({
-            success: true,
-            data: {
-                koderDeleted: koderDeleted
-            }
-        })
+//         const { id } = request.params
+
+//         const koderDeleted = await Koder.findByIdAndDelete(id)
+
+//         if (!koderDeleted) throw new CustomError("El koder no se pudo eliminar", 404)
+
+//         response.json({
+//             success: true,
+//             data: {
+//                 koderDeleted: koderDeleted
+//             }
+//         })
+//         next()
+
+//     } catch (error) {
+//         //Error : { message, status} 
+//         response
+//             .status(error.status || 400)
+//             .json({ sucess: false, message: error.message })
+//     }
+
+// })
 
 
-    } catch (error) {
-        //Error : { message, status} 
-        response
-            .status(error.status || 400)
-            .json({ sucess: false, message: error.message })
-    }
 
-})
-
-
-server.use((request, response, next) => {
-
-    console.log("Adios, fin de la peticion")
-
-})
 
 
 //server.use('/koders', (request, response, next) => { }, kodersRouter)

@@ -3,8 +3,20 @@ import { Koder } from '../models/koders.model.js'
 
 const router = express.Router()
 
-router.get('/', async (request, response) => {
+router.use((request, response, next) => { // Middleware a nivel de router
+    console.log("Request en koders Router")
+    next()
+})
 
+const middlewareGetKoders = (request, response, next) => {
+    console.log("GET /Koders -  Middleware a nivel de endpoint ")
+    next()
+}
+
+//Endpoint
+router.get('/', middlewareGetKoders, async (request, response) => {
+
+    console.log("GET /koders")
     const allKoders = await Koder.find({})
 
 
@@ -17,11 +29,19 @@ router.get('/', async (request, response) => {
     })
 })
 
+
+//Endpoint para agregar koders
 router.post('/', (request, response) => {
     const newKoder = request.body;
-
-    const koderCreated = Koder.create(newKoder)
-
+    console.log("POST /koders")
+    //const koderCreated = Koder.create(newKoder)
+    response.json({
+        sucess: true,
+        loquequieras: "Algo",
+        data: {
+            koders: ""
+        }
+    })
 })
 
 
