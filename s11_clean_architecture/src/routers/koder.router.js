@@ -1,5 +1,5 @@
 import express from 'express'
-import { getKoders } from '../usecases/koder.usecase.js'
+import { createKoder, getKoderById, getKoders } from '../usecases/koder.usecase.js'
 
 
 const router = express.Router()
@@ -48,5 +48,58 @@ router.get('/', async (request, response) => {
     }
 
 })
+
+router.get('/:id', async (request, response) => {
+    try {
+
+        const { id } = request.params
+
+        const koderFound = await getKoderById(id);
+
+        response.json({
+            success: true,
+            data: {
+                koder: koderFound
+            }
+        })
+
+    } catch (error) {
+        response
+            .status(400)
+            .json({
+                success: false,
+                message: "Error at get Koder by Id"
+            })
+    }
+})
+
+
+router.post('/', async (request, response) => {
+
+    try {
+
+        const newKoder = request.body
+        const koderCreated = await createKoder(newKoder);
+
+        response.json({
+            success: true,
+            data: {
+                koder: koderCreated
+            }
+        })
+
+
+    } catch (error) {
+        response
+            .status(400)
+            .json({
+                success: false,
+                message: "Error at create Koder",
+                extraInfo: error.message
+            })
+    }
+})
+
+
 
 export default router
