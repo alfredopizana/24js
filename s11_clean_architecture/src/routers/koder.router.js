@@ -1,5 +1,5 @@
 import express from 'express'
-import { createKoder, getKoderById, getKoders } from '../usecases/koder.usecase.js'
+import { createKoder, deleteKoderById, getKoderById, getKoders, updateKoderById } from '../usecases/koder.usecase.js'
 
 
 const router = express.Router()
@@ -100,6 +100,52 @@ router.post('/', async (request, response) => {
     }
 })
 
+router.patch("/:id", async (request, response) => {
+    try {
 
+        const { id } = request.params
+        const newKoderData = request.body
+        const koderUpdated = await updateKoderById(id, newKoderData)
+
+        response.json({
+            success: true,
+            data: {
+                koder: koderUpdated
+            }
+        })
+
+    } catch (error) {
+        response
+            .status(400)
+            .json({
+                success: false,
+                message: "Error at update Koder",
+                extraInfo: error.message
+            })
+    }
+})
+
+router.delete("/:id", async (request, response) => {
+    try {
+        const { id } = request.params
+
+        const koderDeleted = await deleteKoderById(id)
+
+        response.json({
+            success: true,
+            data: {
+                koder: koderDeleted
+            }
+        })
+    } catch (error) {
+        response
+            .status(400)
+            .json({
+                success: false,
+                message: "Error at delete Koder",
+                extraInfo: error.message
+            })
+    }
+})
 
 export default router

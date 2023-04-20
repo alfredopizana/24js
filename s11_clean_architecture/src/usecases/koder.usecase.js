@@ -5,6 +5,8 @@ import { Koder } from '../models/koder.model.js'
 const createKoder = (koderData) => {
     //Retornamos una promesa de tipo createKoder 
     return Koder.create(koderData)
+
+    //return koder desde json
 }
 
 const getKoders = (filters = {}) => {
