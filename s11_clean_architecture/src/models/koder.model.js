@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const koderSchema = new mongoose.Schema({
     name: {
@@ -42,7 +42,8 @@ const koderSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
-    }
+    },
+
 })
 
 const Koder = mongoose.model('koders', koderSchema)

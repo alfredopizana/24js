@@ -68,8 +68,6 @@ const isAdmin = async (request, response, next) => {
                 })
         }
 
-
-
     } catch (error) {
         response
             .status(401)
