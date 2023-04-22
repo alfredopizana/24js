@@ -1,10 +1,11 @@
 import express from 'express'
 import { createKoder, deleteKoderById, getKoderById, getKoders, updateKoderById } from '../usecases/koder.usecase.js'
-
+import { isAdmin, isAuth } from '../middlewares/auth.middleware.js'
 
 const router = express.Router()
 
-router.get('/', async (request, response) => {
+
+router.get('/', isAuth, async (request, response) => {
 
     try {
         const { age, generation, gender, name, lastname, isGraduated } = request.query
@@ -49,7 +50,7 @@ router.get('/', async (request, response) => {
 
 })
 
-router.get('/:id', async (request, response) => {
+router.get('/:id', isAuth, async (request, response) => {
     try {
 
         const { id } = request.params
@@ -100,7 +101,7 @@ router.post('/', async (request, response) => {
     }
 })
 
-router.patch("/:id", async (request, response) => {
+router.patch("/:id", isAuth, async (request, response) => {
     try {
 
         const { id } = request.params
@@ -125,7 +126,19 @@ router.patch("/:id", async (request, response) => {
     }
 })
 
-router.delete("/:id", async (request, response) => {
+
+/**
+ * Crear otro middleware para validar el role 
+ * y verificar si de tipo admin
+ * 
+ * Si es admin, dejalo pasar
+ * 
+ * Si no, rechazalo por medio de un response.json()
+ * 
+ * Asignarlo al endpoint de delete
+ * 
+ */
+router.delete("/:id", isAuth, isAdmin, async (request, response) => {
     try {
         const { id } = request.params
 

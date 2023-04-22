@@ -18,17 +18,30 @@ const koderSchema = new mongoose.Schema({
     age: {
         type: Number,
         min: 1,
-        max: 100,
-        required: true
+        max: 100
     },
     gender: {
         type: String,
         enum: ['m', 'h', 'o'], // Que valores son validos para este campo
-        required: true
     },
     isGraduated: {
         type: Boolean,
         default: false
+    },
+    email: {
+        type: String, //Regex
+        match: /.*@.*\..*/,
+        required: true,
+        trim: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
     }
 })
 
