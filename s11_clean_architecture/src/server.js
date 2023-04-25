@@ -12,8 +12,9 @@ import authRouter from './routers/auth.router.js'
 const server = express() // Crear el server
 
 // Middlewares
-server.use(cors()) // Va a permitir que su frontend haga peticiones al backend
+//server.use(cors()) // Va a permitir que su frontend haga peticiones al backend
 server.use(express.json())
+server.use(cors())
 
 // Routers
 server.use('/koders', koderRouter)

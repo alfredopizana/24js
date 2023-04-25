@@ -13,7 +13,7 @@ const isAuth = (request, response, next) => {
         //Obtener token
 
         const authorization = request.headers.authorization || ""
-
+        console.log(authorization)
         const token = authorization.replace('Bearer ', '')  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDFmNGJjMmM2ODE3M2E0NTFhMjRmYiIsInNhbHVkbyI6IkhvbGEgZGFtYXJpcyIsImlhdCI6MTY4MjA0OTk2MCwiZXhwIjoxNjgyMTM2MzYwfQ.9Y5nChoUhFm6SI1RXA3E-bK0AGmJ5TVmpCP7M_-DUVA
 
         //Verificar el token

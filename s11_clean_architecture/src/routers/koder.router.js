@@ -5,7 +5,7 @@ import { isAdmin, isAuth } from '../middlewares/auth.middleware.js'
 const router = express.Router()
 
 
-router.get('/', isAuth, async (request, response) => {
+router.get('/', async (request, response) => {
 
     try {
         const { age, generation, gender, name, lastname, isGraduated } = request.query
@@ -75,7 +75,7 @@ router.get('/:id', isAuth, async (request, response) => {
 })
 
 
-router.post('/', async (request, response) => {
+router.post('/', isAuth, async (request, response) => {
 
     try {
 

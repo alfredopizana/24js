@@ -14,7 +14,7 @@ const createKoder = (newKoder) => {
         },
         body: JSON.stringify(newKoder)
     }
-    return fetch(URL, options)
+    return fetch(url, options)
 }
 
 const getFormData = async () => {
@@ -32,5 +32,13 @@ const getFormData = async () => {
     const response = await createKoder(koder)
     console.log(response)
     const data = await response.json()
+    try {
+
+
+    } catch (error) {
+        console.log(error)
+    }
 
 }
+
+getFormData()
