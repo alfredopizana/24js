@@ -11,6 +11,8 @@ const getKoders = async () => {
 const createKoder = async () => {
     try {
 
+
+
         const newKoder = {
             name: "Alfred2",
             lastName: "Pizana",
@@ -25,7 +27,7 @@ const createKoder = async () => {
         //sessionStorage
         //localStorage
 
-        //localStorage.setItem("token", authToken)
+        localStorage.setItem("token", authToken)
 
         const token = localStorage.getItem("token")
         console.log({ token })
@@ -35,7 +37,7 @@ const createKoder = async () => {
         const options = {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${authToken}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(newKoder)
