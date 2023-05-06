@@ -9,6 +9,10 @@ server.use(express.json())
 server.use(cors())
 
 // Routers
+// "/"
+server.use(express.static('public'))
+
+server.use('/public', express.static('public'))
 server.use('/users', userRouter)
 server.use('/auth', authRouter)
 

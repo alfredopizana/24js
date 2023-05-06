@@ -1,17 +1,13 @@
-
 const URL_BASE_API = 'http://localhost:8080'
 
 const getAllKoders = () => {
 }
 
 
-const signUp = (newKoder) => {
+const signUp = async (newKoder) => {
     const url = `${URL_BASE_API}/users`
     const options = {
         method: 'POST',
-        headers: {
-            'Context-Type': 'multipart/form-data',
-        },
         body: newKoder
     }
     return fetch(url, options)
@@ -21,9 +17,6 @@ const login = (data) => {
     const url = `${URL_BASE_API}/auth/login`
     const options = {
         method: 'POST',
-        headers: {
-            'Context-Type': 'application/json',
-        },
         body: JSON.stringify(data)
     }
     return fetch(url, options)
@@ -54,7 +47,7 @@ const getFormData = async () => {
 
 
 
-const submitFormButton = document.getElementById("signup-form")
+const submitFormButton = document.getElementById("submit-form")
 
 let inputsValue = document.querySelectorAll("#signup-form input.field");
 let avatarInput = document.getElementById("avatar")
@@ -79,17 +72,26 @@ avatarInput.addEventListener("change", (event) => {
     console.log(data)
 });
 
-submitFormButton.addEventListener("submit", async (event) => {
+submitFormButton.addEventListener("click", (event) => {
     event.preventDefault()
+
     let formData = new FormData();
     formData.append("name", data.name);
     formData.append("lastName", data.lastName);
     formData.append("email", data.email);
     formData.append("password", data.password);
     if (data.avatar) {
-        //formData.append("avatar", data.avatar);
-
         formData.append("avatar", data.avatar);
     }
-    await signUp(data)
+    console.log(formData)
+    signUp(formData)
+        .then((response) => {
+            return response.json()
+
+        })
+        .then((userCreated) => {
+            console.log(userCreated)
+        })
+        .catch((error) => { console.log(error) })
+    event.preventDefault();
 })
