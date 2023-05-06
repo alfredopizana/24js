@@ -1,6 +1,19 @@
 import express from 'express'
 import { createUser, deleteUserById, getUserById, getUsers, updateUserById } from '../usecases/user.usecase.js'
 import { isAdmin, isAuth } from '../middlewares/auth.middleware.js'
+import multer from "multer"
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, `${uniqueSuffix}-${file.originalname}`)
+    }
+})
+
+const upload = multer({ storage: storage })
+
 
 const router = express.Router()
 
@@ -64,12 +77,18 @@ router.get('/:id', isAuth, async (request, response) => {
     }
 })
 
-router.post('/', async (request, response) => {
+router.post('/', upload.single('avatar'), async (request, response) => {
 
     try {
 
-        const newUser = request.body
+        let newUser = request.body
         console.log(newUser)
+        const file = request.file;
+        console.log(file)
+        console.log(file.path)
+        const profilePictureUrl = file ? file?.path : undefined;
+        if (profilePictureUrl)
+            newUser.profilePictureUrl = profilePictureUrl
         const userCreated = await createUser(newUser);
         if (!userCreated) throw new Error("Error at create user")
         const { password, ...userReponse } = userCreated._doc;

@@ -69,27 +69,39 @@ inputsValue.forEach((fieldsData) => {
         console.log(data)
     });
 });
-avatarInput.addEventListener("change", (event) => {
+avatarInput.addEventListener("change", async (event) => {
+    // const { files } = e.target;
+    // const validImageFiles = [];
+
     console.log(event.target.files)
     if (event.target.files[0]) {
         let property = event.target.name;
         let value = event.target.files[0];
-        data[property] = value;
+        data["avatar"] = value;
     }
     console.log(data)
 });
 
-submitFormButton.addEventListener("submit", async (event) => {
-    event.preventDefault()
-    let formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("lastName", data.lastName);
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-    if (data.avatar) {
-        //formData.append("avatar", data.avatar);
+submitFormButton.addEventListener("submit", (event) => {
+    try {
+        event.preventDefault()
+        let formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("lastName", data.lastName);
+        formData.append("email", data.email);
+        formData.append("password", data.password);
+        if (data.avatar) {
+            //formData.append("avatar", data.avatar);
 
-        formData.append("avatar", data.avatar);
+            formData.append("avatar", data.avatar);
+            console.log("Added Avatar")
+        }
+        signUp(formData).then((userCreated) => {
+            console.log(userCreated)
+        })
+
+    } catch (error) {
+        console.log(error)
     }
-    await signUp(data)
+
 })
